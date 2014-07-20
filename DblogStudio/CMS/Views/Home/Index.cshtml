@@ -1,7 +1,8 @@
 ﻿@{
     ViewBag.Title = "Home Page";
+
 }
-@section featured {
+@*@section featured {
     <section class="featured">
         <div class="content-wrapper">
             <hgroup class="title">
@@ -17,29 +18,105 @@
             </p>
         </div>
     </section>
-}
-<h3>We suggest the following:</h3>
-<ol class="round">
-    <li class="one">
-        <h5>Getting Started</h5>
-        ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-        enables a clean separation of concerns and that gives you full control over markup
-        for enjoyable, agile development. ASP.NET MVC includes many features that enable
-        fast, TDD-friendly development for creating sophisticated applications that use
-        the latest web standards.
-        <a href="http://go.microsoft.com/fwlink/?LinkId=245151">Learn more…</a>
-    </li>
+}*@
 
-    <li class="two">
-        <h5>Add NuGet packages and jump-start your coding</h5>
-        NuGet makes it easy to install and update free libraries and tools.
-        <a href="http://go.microsoft.com/fwlink/?LinkId=245153">Learn more…</a>
-    </li>
+<div class="container">
+    <div class="col-sm-8">
+        <ol class="breadcrumb col-sm-12">
+            <li><a href="#">Trang chủ</a></li>
+            <li><a href="#">Chủ đề</a></li>
+            <li class="active">Tin học đại cương</li>
+        </ol>
+        <ul class="media-list col-sm-12">
+            <li class="media">
+                <a class="pull-left" href="image/about.jpg">
+                    <img width="64px" height="64px" class="media-object" src="image/about.jpg" alt="...">
+                </a>
+                <div class="media-body">
+                    <h4 class="media-heading">Media heading</h4>
+                    Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello 
+                </div>
+            </li>
+            <li class="media">
+                <a class="pull-left" href="image/about.jpg">
+                    <img width="64px" height="64px" class="media-object" src="image/about.jpg" alt="...">
+                </a>
+                <div class="media-body">
+                    <h4 class="media-heading">Media heading</h4>
+                    Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello 
+                </div>
+            </li>
+        </ul>
+        <div style="text-align: center">
+            <ul class="pagination pagination-lg">
+                <li class="disabled"><a href="#">&laquo;</a></li>
+                <li class="active"><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
+                <li><a href="#">&raquo;</a></li>
+            </ul>
+        </div>
+    </div>
+    <div role="navigation" id="sidebar" class="col-sm-3 col-sm-offset-1 sidebar-offcanvas">
+        <div class="sidebar-module sidebar-module-inset">
+            <h4>About</h4>
+            <p>
+                Etiam porta
+					<em>sem malesuada magna</em>
+                mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.
+            </p>
+        </div>
+        <div class="sidebar-module">
+            <h4>Archives</h4>
+            <ol class="list-unstyled">
+                <li><a href="#">March 2014</a></li>
+                <li><a href="#">February 2014</a></li>
+                <li><a href="#">January 2014</a></li>
+                <li><a href="#">December 2013</a></li>
+                <li><a href="#">November 2013</a></li>
+                <li><a href="#">October 2013</a></li>
+                <li><a href="#">September 2013</a></li>
+                <li><a href="#">August 2013</a></li>
+                <li><a href="#">July 2013</a></li>
+                <li><a href="#">June 2013</a></li>
+                <li><a href="#">May 2013</a></li>
+                <li><a href="#">April 2013</a></li>
+            </ol>
+        </div>
 
-    <li class="three">
-        <h5>Find Web Hosting</h5>
-        You can easily find a web hosting company that offers the right mix of features
-        and price for your applications.
-        <a href="http://go.microsoft.com/fwlink/?LinkId=245157">Learn more…</a>
-    </li>
-</ol>
+        <div class="list-group">
+            <a class="list-group-item active" href="#">Link</a>
+            <a class="list-group-item" href="#">Link</a>
+            <a class="list-group-item" href="#">Link</a>
+
+        </div>
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Panel title</h3>
+            </div>
+            <div class="panel-body">
+                Panel content
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="container">
+    <div class="jumbotron col-sm-8">
+        <article>
+            <header>
+                <h1 class="headline">Tiêu đề bài viết</h1>
+                <div class="byline">
+                    <address class="author">Viết bởi <a rel="author" href="#">Nguyễn Dũng</a>, <time pubdate datetime="2011-08-28" title="August 28th, 2011">ngày 14 tháng 07 năm 2014</time></address>
+                </div>
+            </header>
+            <div class="article-content">
+                <p>Nội dung bài viết đặt ở đây</p>
+            </div>
+
+        </article>
+    </div>
+</div>
