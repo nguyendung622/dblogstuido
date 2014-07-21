@@ -25,11 +25,11 @@ namespace CMS.Filters
         {
             public SimpleMembershipInitializer()
             {
-                Database.SetInitializer<UsersContext>(null);
+                Database.SetInitializer<DblogStudioDBContext>(null);
 
                 try
                 {
-                    using (var context = new UsersContext())
+                    using (var context = new DblogStudioDBContext())
                     {
                         if (!context.Database.Exists())
                         {

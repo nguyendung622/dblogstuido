@@ -22,9 +22,9 @@ namespace CMS
             //    consumerKey: "",
             //    consumerSecret: "");
 
-            //OAuthWebSecurity.RegisterFacebookClient(
-            //    appId: "",
-            //    appSecret: "");
+            OAuthWebSecurity.RegisterFacebookClient(
+                appId: "422712044533184",
+                appSecret: "1b56ca4b3b151f8ca71d71297cd4d469");
 
             //OAuthWebSecurity.RegisterGoogleClient();
         }

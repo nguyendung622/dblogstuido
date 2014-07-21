@@ -8,14 +8,18 @@ using System.Web.Security;
 
 namespace CMS.Models
 {
-    public class UsersContext : DbContext
+    public class DblogStudioDBContext : DbContext
     {
-        public UsersContext()
+        public DblogStudioDBContext()
             : base("DefaultConnection")
         {
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<DblogStudioDBContext, Migrations.Configuration>("DefaultConnection"));
         }
 
         public DbSet<UserProfile> UserProfiles { get; set; }
+        public DbSet<ExtraUserProfile> ExtraUserProfile { get; set; }
+        public DbSet<Subject> Subject { get; set; }
+        public DbSet<Article> Article { get; set; }
     }
 
     [Table("UserProfile")]
@@ -26,6 +30,50 @@ namespace CMS.Models
         public int UserId { get; set; }
         public string UserName { get; set; }
     }
+
+    [Table("ExtraUserProfile")]
+    public class ExtraUserProfile
+    {
+        [Key]
+        public int UserId { get; set; }
+        public string UserName { get; set; }
+        public string FullName { get; set; }
+        public string BirthDay { get; set; }
+        public string Department { get; set; }
+        [Required]
+        public int Role { get; set; }
+        public string StudentId { get; set; }
+    }
+
+    [Table("Subject")]
+    public class Subject
+    {
+        [Key]
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Group { get; set; }
+        public virtual List<Article> Articles { get; set; }
+    }
+
+    [Table("Article")]
+    public class Article
+    {
+        [Key]
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public string Content { get; set; }
+        public string PublicDate { get; set; }
+        public int UserId { get; set; }
+        [ForeignKey("UserId")]
+        public virtual ExtraUserProfile User { get; set; }
+        public int SubjectId { get; set; }
+        [ForeignKey("SubjectId")]
+        public virtual Subject Subject { get; set; }
+    }
+
+    /*
+     * Class ViewModel
+     */
 
     public class RegisterExternalLoginModel
     {

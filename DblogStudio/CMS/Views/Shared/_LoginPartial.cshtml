@@ -8,7 +8,7 @@
     }
     </text>
     <p class="navbar-text navbar-right">
-        Xin chào: @Html.ActionLink("Nguyễn Dũng", "Manage", "Account", routeValues: null, htmlAttributes: new { @class = "navbar-link", title = "Manage" })! 
+        Xin chào: @Html.ActionLink(@User.Identity.Name, "Manage", "Account", routeValues: null, htmlAttributes: new { @class = "navbar-link", title = "Manage" })! 
         @*@Html.ActionLink("Đăng xuất", "LogOff", "Account", routeValues: null, htmlAttributes: new {@class = "navbar-link", id = "logoutLink" })*@
     </p>
 
