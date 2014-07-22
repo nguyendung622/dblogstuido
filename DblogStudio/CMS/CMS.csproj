@@ -188,18 +188,16 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ArticleController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201407210918129_ArtileTable.cs" />
-    <Compile Include="Migrations\201407210918129_ArtileTable.Designer.cs">
-      <DependentUpon>201407210918129_ArtileTable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201407210922244_EditUserProfile.cs" />
-    <Compile Include="Migrations\201407210922244_EditUserProfile.Designer.cs">
-      <DependentUpon>201407210922244_EditUserProfile.cs</DependentUpon>
+    <Compile Include="Helper\Ultilities.cs" />
+    <Compile Include="Migrations\201407211547403_a.cs" />
+    <Compile Include="Migrations\201407211547403_a.Designer.cs">
+      <DependentUpon>201407211547403_a.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
@@ -347,11 +345,8 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201407210918129_ArtileTable.resx">
-      <DependentUpon>201407210918129_ArtileTable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201407210922244_EditUserProfile.resx">
-      <DependentUpon>201407210922244_EditUserProfile.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201407211547403_a.resx">
+      <DependentUpon>201407211547403_a.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

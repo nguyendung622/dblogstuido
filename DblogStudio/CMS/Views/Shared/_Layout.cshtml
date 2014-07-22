@@ -39,27 +39,14 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li class="active">@Html.ActionLink("Trang chủ", "Index", "Home")</li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Chủ đề<span class="caret"></span></a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li class="dropdown-header">Tin học đại cương</li>
-                                <li><a href="#">[TIN1013]Khối tự nhiên <span class="badge">42</span></a></li>
-                                <li><a href="#">[TIN1023]Khối xã hội</a></li>
-                                <li class="divider"></li>
-                                <li class="dropdown-header">Nguyên lý</li>
-                                <li><a href="#">Kỹ nghệ phần mềm</a></li>
-                                <li class="divider"></li>
-                                <li class="dropdown-header">Lập trình nâng cao</li>
-                                <li><a href="#">Di động</a></li>
-                                <li><a href="#">Web</a></li>
-                                <li><a href="#">Desktop</a></li>
-
-                            </ul>
-                        </li>
+                        @*<li class="active">@Html.ActionLink("Trang chủ", "Index", "Home")</li>*@
+                        @Html.MenuItem("Trang chủ", "Index","Home")
+                        @Html.MenuDropDown()
                         <li><a href="service.html">Dịch vụ</a></li>
                         <li><a href="#">Thông báo</a></li>
-                        <li>@Html.ActionLink("Thông tin", "About", "Home")</li>
+                        @*<li>@Html.ActionLink("Thông tin", "About", "Home")</li>*@
+
+                        @Html.MenuItem("Thông tin", "About", "Home")
                     </ul>
                     <form class="navbar-form navbar-right" role="search">
                         <div class="input-group">

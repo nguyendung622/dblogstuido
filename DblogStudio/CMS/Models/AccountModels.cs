@@ -14,6 +14,7 @@ namespace CMS.Models
             : base("DefaultConnection")
         {
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<DblogStudioDBContext, Migrations.Configuration>("DefaultConnection"));
+            //Database.SetInitializer<DblogStudioDBContext>(new DropCreateDatabaseIfModelChanges<DblogStudioDBContext>());
         }
 
         public DbSet<UserProfile> UserProfiles { get; set; }
