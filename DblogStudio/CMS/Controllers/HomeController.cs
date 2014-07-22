@@ -28,5 +28,15 @@ namespace CMS.Controllers
 
             return View();
         }
+
+        public ActionResult Service()
+        {
+            return View();
+        }
+
+        public ActionResult ListNotifies()
+        {
+            return View();
+        }
     }
 }

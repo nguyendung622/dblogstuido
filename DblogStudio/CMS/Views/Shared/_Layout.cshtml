@@ -12,12 +12,12 @@
 <body>
     <div id="fb-root"></div>
     <script>(function (d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) return;
-        js = d.createElement(s); js.id = id;
-        js.src = "//connect.facebook.net/vi_VN/sdk.js#xfbml=1&appId=422712044533184&version=v2.0";
-        fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/vi_VN/sdk.js#xfbml=1&appId=422712044533184&version=v2.0";
+    fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
 
     </script>
     <header>
@@ -40,12 +40,10 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         @*<li class="active">@Html.ActionLink("Trang chủ", "Index", "Home")</li>*@
-                        @Html.MenuItem("Trang chủ", "Index","Home")
+                        @Html.MenuItem("Trang chủ", "Index", "Home")
                         @Html.MenuDropDown()
-                        <li><a href="service.html">Dịch vụ</a></li>
-                        <li><a href="#">Thông báo</a></li>
-                        @*<li>@Html.ActionLink("Thông tin", "About", "Home")</li>*@
-
+                        @Html.MenuItem("Dịch vụ", "Service", "Home")
+                        @Html.MenuItem("Thông báo", "ListNotifies", "Home")
                         @Html.MenuItem("Thông tin", "About", "Home")
                     </ul>
                     <form class="navbar-form navbar-right" role="search">
@@ -57,14 +55,10 @@
                                 </button>
                             </span>
                         </div>
-                        <!-- /input-group -->
                     </form>
-
                     @Html.Partial("_LoginPartial");
                 </div>
-                <!-- /.navbar-collapse -->
             </div>
-            <!-- /.container-fluid -->
         </div>
 
         <div id="myCarousel" class="carousel slide" data-ride="carousel">
@@ -108,16 +102,14 @@
             <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
             <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
         </div>
+
     </header>
-
     @RenderBody()
-
     <hr class="featurette-divider" style="margin: 0px">
     <footer>
         <p class="pull-right"><a href="#" class="btn btn-default"><span class="glyphicon glyphicon-circle-arrow-up"></span>Lên đầu trang</a></p>
         <p>&copy; 2014 Dblog studio</p>
     </footer>
-
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/js/bootstrap")
     @RenderSection("scripts", required: false)
