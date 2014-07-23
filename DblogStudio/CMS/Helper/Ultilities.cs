@@ -8,13 +8,6 @@ namespace CMS.Helper
 {
     public static class Ultilities
     {
-        /*<li class="active">@Html.ActionLink("Trang chủ", "Index", "Home")</li>
-       *  <li class="dropdown">
-                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Chủ đề<span class="caret"></span></a>
-                             
-                         </li>
-       * 
-       */
         public static MvcHtmlString MenuItem(this HtmlHelper htmlHelper,
                                              string text, string action,
                                              string controller,
@@ -55,20 +48,7 @@ namespace CMS.Helper
             }
             return MvcHtmlString.Create(li.ToString());
         }
-        //<ul class="dropdown-menu" role="menu">
-        //                         <li class="dropdown-header">Tin học đại cương</li>
-        //                         <li><a href="#">[TIN1013]Khối tự nhiên <span class="badge">42</span></a></li>
-        //                         <li><a href="#">[TIN1023]Khối xã hội</a></li>
-        //                         <li class="divider"></li>
-        //                         <li class="dropdown-header">Nguyên lý</li>
-        //                         <li><a href="#">Kỹ nghệ phần mềm</a></li>
-        //                         <li class="divider"></li>
-        //                         <li class="dropdown-header">Lập trình nâng cao</li>
-        //                         <li><a href="#">Di động</a></li>
-        //                         <li><a href="#">Web</a></li>
-        //                         <li><a href="#">Desktop</a></li>
-
-        //                     </ul>
+     
         public static MvcHtmlString MenuDropDown(this HtmlHelper htmlHelper)
         {
             var li = new TagBuilder("li");
@@ -96,5 +76,14 @@ namespace CMS.Helper
             li.InnerHtml += ul.ToString();
             return MvcHtmlString.Create(li.ToString());
         }
+
+        //public static MvcHtmlString BreadCumb(this HtmlHelper htmlHelper)
+        //{
+        //    /*<li><a href="#">Trang chủ</a></li>
+        //    <li><a href="#">Chủ đề</a></li>
+        //    <li class="active">Tin học đại cương</li>
+        //     */
+
+        //}
     }
 }
