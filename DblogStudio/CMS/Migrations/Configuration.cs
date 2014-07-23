@@ -30,12 +30,12 @@
             //    );
             //
             List<Subject> listSubject = new List<Subject>();
-            listSubject.Add(new Subject { Name = "Tin học đại cương - Khối xã hội", Group = "Đại cương" });
-            listSubject.Add(new Subject { Name = "Tin học đại cương - Khối tự nhiên", Group = "Đại cương" });
-            listSubject.Add(new Subject { Name = "Kỹ nghệ phần mềm", Group = "Cơ sở" });
-            listSubject.Add(new Subject { Name = "Lập trình Web", Group = "Chuyên ngành" });
-            listSubject.Add(new Subject { Name = ".Net Framework", Group = "Chuyên ngành" });
-            listSubject.Add(new Subject { Name = "Lập trình di động", Group = "Chuyên ngành" });
+            listSubject.Add(new Subject { Id = 1, Name = "Tin học đại cương - Khối xã hội", Group = "Đại cương" });
+            listSubject.Add(new Subject { Id = 2, Name = "Tin học đại cương - Khối tự nhiên", Group = "Đại cương" });
+            listSubject.Add(new Subject { Id = 3, Name = "Kỹ nghệ phần mềm", Group = "Cơ sở" });
+            listSubject.Add(new Subject { Id = 4, Name = "Lập trình Web", Group = "Chuyên ngành" });
+            listSubject.Add(new Subject { Id = 5, Name = ".Net Framework", Group = "Chuyên ngành" });
+            listSubject.Add(new Subject { Id = 6, Name = "Lập trình di động", Group = "Chuyên ngành" });
             foreach (Subject s in listSubject)
                 context.Subject.AddOrUpdate(s);
             context.SaveChanges();

@@ -1,4 +1,10 @@
-
+.ui-widget {
+    font-family:inherit;
+    font-size:inherit;
+}
+.ui-dialog-content {
+    overflow:unset;
+}
 body {
     padding-top: 50px;
 }

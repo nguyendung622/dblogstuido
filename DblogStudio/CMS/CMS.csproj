@@ -188,6 +188,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\ArticleController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
@@ -195,6 +196,10 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helper\Ultilities.cs" />
+    <Compile Include="Migrations\201407230714394_abc.cs" />
+    <Compile Include="Migrations\201407230714394_abc.Designer.cs">
+      <DependentUpon>201407230714394_abc.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\DBContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -223,6 +228,7 @@
     <Content Include="Content\themes\base\images\ui-icons_888888_256x240.png" />
     <Content Include="Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
     <Content Include="Content\themes\base\jquery-ui.css" />
+    <Content Include="Content\themes\base\jquery.ui.theme.css" />
     <Content Include="Content\themes\base\jquery.ui.accordion.css" />
     <Content Include="Content\themes\base\jquery.ui.all.css" />
     <Content Include="Content\themes\base\jquery.ui.autocomplete.css" />
@@ -236,7 +242,6 @@
     <Content Include="Content\themes\base\jquery.ui.selectable.css" />
     <Content Include="Content\themes\base\jquery.ui.slider.css" />
     <Content Include="Content\themes\base\jquery.ui.tabs.css" />
-    <Content Include="Content\themes\base\jquery.ui.theme.css" />
     <Content Include="Content\themes\base\minified\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\minified\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\minified\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -333,12 +338,21 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
+    <Content Include="Views\Shared\_LayoutAdmin.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Admin\RoleManage.cshtml" />
+    <Content Include="Views\Admin\CreateRole.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201407230714394_abc.resx">
+      <DependentUpon>201407230714394_abc.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

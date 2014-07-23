@@ -1,0 +1,32 @@
+﻿@{
+    ViewBag.Title = "CreateRole";
+    Layout = "";
+}
+<form class="form-horizontal" role="form">
+    <div class="form-group">
+        <label for="inputName" class="col-sm-4 control-label">Tên quyền</label>
+        <div class="col-sm-7">
+            <input type="text" class="form-control" id="inputRole" placeholder="Quyền">
+        </div>
+    </div>
+    <button id="okButton" type="button" class="btn btn-primary">Tạo mới</button>
+    <button id="cancelButton" type="button" class="btn btn-danger">Bỏ qua</button>
+</form>
+<script>
+    $(function () {
+        $("#okButton").click(function () {
+            $.post("/Admin/CreateRole", { "roleName": "Admin" },
+                    function (data) {
+                        // Successful requests get here
+                        // Update the page elements
+                        alert(data);
+                        $(".ui-dialog-content").dialog("close");
+                    });
+            //$(".ui-dialog-content").dialog("close");
+        });
+        $("#cancelButton").click(function () {
+            $(".ui-dialog-content").dialog("close");
+        });
+    });
+
+</script>

@@ -50,6 +50,11 @@ namespace CMS
                         "~/Content/themes/base/jquery.ui.datepicker.css",
                         "~/Content/themes/base/jquery.ui.progressbar.css",
                         "~/Content/themes/base/jquery.ui.theme.css"));
+
+            bundles.Add(new StyleBundle("~/Admin/css").Include(
+                "~/Content/bootstrap.min.css",
+                "~/Content/bootstrap-theme.css", 
+                "~/Content/dashboard.css"));
         }
     }
 }
