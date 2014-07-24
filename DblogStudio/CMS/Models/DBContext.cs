@@ -21,6 +21,7 @@ namespace CMS.Models
         public DbSet<ExtraUserProfile> ExtraUserProfile { get; set; }
         public DbSet<Subject> Subject { get; set; }
         public DbSet<Article> Article { get; set; }
+        public DbSet<Notify> Notify { get; set; }
     }
 
     [Table("UserProfile")]
@@ -50,16 +51,20 @@ namespace CMS.Models
     public class Subject
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Name { get; set; }
         public string Group { get; set; }
         public virtual List<Article> Articles { get; set; }
+        [NotMapped]
+        public int TotalArticle { get; set; }
     }
 
     [Table("Article")]
     public class Article
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }
@@ -70,6 +75,18 @@ namespace CMS.Models
         public int SubjectId { get; set; }
         [ForeignKey("SubjectId")]
         public virtual Subject Subject { get; set; }
+    }
+
+    [Table("Notify")]
+    public class Notify
+    {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public string Content { get; set; }
+        public DateTime DateCreated { get; set; }
+        public DateTime? DateEnd { get; set; }
     }
 
     /*

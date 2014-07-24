@@ -187,6 +187,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="BLL\SubjectBLL.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\ArticleController.cs" />
@@ -196,9 +197,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helper\Ultilities.cs" />
-    <Compile Include="Migrations\201407230714394_abc.cs" />
-    <Compile Include="Migrations\201407230714394_abc.Designer.cs">
-      <DependentUpon>201407230714394_abc.cs</DependentUpon>
+    <Compile Include="Migrations\201407230233563_ab.cs" />
+    <Compile Include="Migrations\201407230233563_ab.Designer.cs">
+      <DependentUpon>201407230233563_ab.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\DBContext.cs" />
@@ -350,8 +351,8 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201407230714394_abc.resx">
-      <DependentUpon>201407230714394_abc.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201407230233563_ab.resx">
+      <DependentUpon>201407230233563_ab.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
