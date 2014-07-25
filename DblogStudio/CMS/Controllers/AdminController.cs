@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.Security;
-
+using CMS.BLL;
 namespace CMS.Controllers
 {
     public class AdminController : Controller
@@ -23,14 +22,27 @@ namespace CMS.Controllers
         }
 
         [HttpPost]
-        public ActionResult GetListRole()
+        public string GetListRole()
         {
-            //Roles.GetAllRoles()
-            var list = new List<Role>();
-            list.Add(new Role { Name = "Admin 1" });
-            list.Add(new Role { Name = "Admin 2" });
-            list.Add(new Role { Name = "Admin 3" });
-            return Json(list);
+            var table = new TagBuilder("table");
+            table.AddCssClass("table table-striped");
+            table.InnerHtml = @"
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Role</th>
+                        <th>Thao tác</th>        
+                    </tr>
+                </thead>
+                <tbody>
+            ";
+            int i = 1;
+            foreach (var item in RoleBLL.GetAllRoles())
+            {
+                table.InnerHtml += string.Format("<tr><td>{0}</td><td>{1}</td><td>{2}</td></tr>", i++,item.RoleName,"Xóa");
+            }
+            table.InnerHtml += @"</tbody>";
+            return table.ToString();
         }
 
         [HttpGet]
@@ -39,14 +51,32 @@ namespace CMS.Controllers
             return View();
         }
         [HttpPost]
-        public string CreateRole(string roleName)
+        public int CreateRole(string roleName)
         {
-            return roleName;
-        }
-        public class Role
-        {
-            public string Name { get; set; }
-        }
+            /*
+             * return 1 nếu thành công
+             * return -1 nếu trùng
+             * return 0 nếu thất bại
+             */
+            if (!string.IsNullOrEmpty(roleName))
+            {
+                try
+                {
 
+                    if (RoleBLL.RoleExists(roleName))
+                        return -1;
+                    else
+                    {
+
+                        return (RoleBLL.Create(roleName) == null) ? 0 : 1;
+                    }
+                }
+                catch
+                {
+                    return 0;
+                }
+            }
+            return 0;
+        }
     }
 }

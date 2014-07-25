@@ -6,12 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@ViewBag.Title</title>
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-
-    @Scripts.Render("~/bundles/modernizr")
-</head>
-<body>
+    @Styles.Render("~/Admin/css")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/js/bootstrap")
+    <script src="~/Scripts/admin.js" type="text/javascript" />
+    @Scripts.Render("~/bundles/modernizr")
+    <script>
+        $(function () {
+            $("#loading").bind("ajaxStart", function () {
+                $(this).show();
+            }).bind("ajaxComplete", function () {
+                $(this).hide();
+            });
+        });
+    </script>
+</head>
+<body>
     @RenderSection("scripts", required: false)
     <div role="navigation" class="navbar navbar-inverse navbar-fixed-top">
         <div class="container-fluid">
@@ -119,6 +129,6 @@
     </div>
 
 
-    @Styles.Render("~/Admin/css")
+
 </body>
 </html>

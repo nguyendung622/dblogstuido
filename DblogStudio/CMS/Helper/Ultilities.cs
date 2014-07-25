@@ -1,5 +1,4 @@
-﻿using CMS.BLL;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -65,16 +64,16 @@ namespace CMS.Helper
             var ul = new TagBuilder("ul");
             ul.AddCssClass("dropdown-menu");
             ul.MergeAttribute("role", "menu");
-            var listSubject = SubjectBLL.GetList();
-            foreach (var subject in listSubject)
-            {
-                var a = new TagBuilder("a");
-                var urlHelper = new UrlHelper(htmlHelper.ViewContext.RequestContext);
-                var url = urlHelper.Action("ListArticle", "Article", new { idCatalogy = subject.Id });
-                a.MergeAttribute("href", url);
-                a.InnerHtml = subject.Name + "<span class='badge'>" + (42).ToString() + "</span>";
-                ul.InnerHtml += "<li>" + a.ToString() + "</li>";
-            }
+            //var listSubject = SubjectBLL.GetList();
+            //foreach (var subject in listSubject)
+            //{
+            //    var a = new TagBuilder("a");
+            //    var urlHelper = new UrlHelper(htmlHelper.ViewContext.RequestContext);
+            //    var url = urlHelper.Action("ListArticle", "Article", new { idCatalogy = subject.Id });
+            //    a.MergeAttribute("href", url);
+            //    a.InnerHtml = subject.Name + "<span class='badge'>" + (42).ToString() + "</span>";
+            //    ul.InnerHtml += "<li>" + a.ToString() + "</li>";
+            //}
             li.InnerHtml += ul.ToString();
             return MvcHtmlString.Create(li.ToString());
         }

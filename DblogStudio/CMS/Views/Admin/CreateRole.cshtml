@@ -15,12 +15,16 @@
 <script>
     $(function () {
         $("#okButton").click(function () {
-            $.post("/Admin/CreateRole", { "roleName": "Admin" },
+            $.post("/Admin/CreateRole", { "roleName": $("#inputRole").val() },
                     function (data) {
-                        // Successful requests get here
-                        // Update the page elements
-                        alert(data);
-                        $(".ui-dialog-content").dialog("close");
+                        if (data == 0)
+                            alert("Không tạo được role này");
+                        else if (data == -1)
+                            alert("Role này đã tồn tại");
+                        else {
+                            GetListRole();
+                            $(".ui-dialog-content").dialog("close");
+                        }
                     });
             //$(".ui-dialog-content").dialog("close");
         });

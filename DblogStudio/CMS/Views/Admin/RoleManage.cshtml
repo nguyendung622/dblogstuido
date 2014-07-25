@@ -8,42 +8,31 @@
 <h1 class="page-header">Quản lý quyền</h1>
 <button id="addButton" type="button" class="btn btn-default">Thêm mới</button>
 <h2 class="sub-header">Danh sách các quyền của hệ thống</h2>
-<div class="table-responsive">
-    
+<div class="table-responsive" id="roleTable">
 </div>
+<div id="loading"><img src="~/Images/waiting-wheel-300x300.gif" width="80px" height="80px" /></div>
+<div id="dialog"></div>
+<script type="text/javascript">
+    $(function () {
+        $('#dialog').dialog({
+            autoOpen: false,
+            width: 400,
+            resizable: false,
+            title: 'Tạo mới',
+            modal: true,
+            draggable: false
+        });
 
-
-<div id="dialog" title="Create Album">
-    <script type="text/javascript">
-        $(function () {
-            $('#dialog').dialog({
-                autoOpen: false,
-                width: 400,
-                resizable: false,
-                title: 'Tạo mới',
-                modal: true,
-                draggable: false
-            });
-
-            $('#addButton').click(function () {
-                //Load the CreateAlbumPartial action which will return 
-                // the partial view _CreateAlbumPartial
-                $('#dialog').load("@Url.Action("CreateRole", "Admin")",
+        $('#addButton').click(function () {
+            //Load the CreateAlbumPartial action which will return 
+            // the partial view _CreateAlbumPartial
+            $('#dialog').load("@Url.Action("CreateRole", "Admin")",
                 function (response, status, xhr) {
                     $('#dialog').dialog('open');
                 });
-            });
-            $.post("/Admin/GetListRole", { null: null },
-                                        function (data) {
-                                            // Successful requests get here
-                                            // Update the page elements
-                                            var i = 0;
-                                            for (i; i < data.length; i++)
-                                                $("#roleTable").append(
-                                                    "<tr>" + "<td>" + (i + 1) + "</td><td>" + data[i].Name + "</td></tr>"
-                                                    );
-                });
-
         });
+        GetListRole();
 
-    </script>
+    });
+
+</script>
