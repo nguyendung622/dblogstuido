@@ -6,37 +6,46 @@
 @Styles.Render("~/Content/themes/base/css")
 
 <h1 class="page-header">Quản lý quyền</h1>
-<div id="thongbao" style="margin: 0px 0px 10px; height: 50px">
-</div>
-@using (Html.BeginForm("", "", FormMethod.Post, new { role = "form", @class = "form-inline" }))
-{
-    <div class="input-group">
-        <input id="inputRoleName" title="Vui lòng nhập tên quyền" required="required" type="text" placeholder="Tên quyền" class="form-control">
-        <span class="input-group-btn">
-            <button id="addButton" type="button" class="btn btn-default">
-                Thêm mới
-            </button>
-        </span>
-    </div>
-}
 
+<div class="input-group">
+    <input id="inputRoleName" title="Vui lòng nhập tên quyền" required="required" type="text" placeholder="Tên quyền" class="form-control">
+    <span class="input-group-btn">
+        <button id="addButton" type="button" class="btn btn-default">
+            Thêm mới
+        </button>
+    </span>
+</div>
 <h2 class="sub-header">Danh sách các quyền của hệ thống</h2>
 <div class="table-responsive" id="roleTable">
 </div>
 @*<div id="loading">
     <img src="~/Images/waiting-wheel-300x300.gif" width="80px" height="80px" />
+</div>*@
+<div id="dialogUpdate">
 </div>
-<div id="dialog"></div>*@
+<div id="thongbao" style="position: fixed; bottom: 0px">
+</div>
 <script type="text/javascript">
     $(function () {
-        //$('#dialog').dialog({
-        //    autoOpen: false,
-        //    width: 400,
-        //    resizable: false,
-        //    title: 'Tạo mới',
-        //    modal: true,
-        //    draggable: false
-        //});
+        $('#dialogUpdate').dialog({
+            autoOpen: false,
+            width: 400,
+            resizable: false,
+            title: 'Cập nhật',
+            modal: true,
+            draggable: false,
+            //buttons: {
+            //    "Đồng ý": function () {
+            //        $(this).dialog("close");
+            //    },
+            //    "Bỏ qua": function () {
+            //        $(this).dialog("close");
+            //    }
+            //},
+            close: function (event, ui) {
+                //$(this).remove();
+            }
+        });
         $("#thongbao").visible = false;
 
         $('#addButton').click(function () {
@@ -70,25 +79,26 @@
                                                str += "<tbody>";
 
                                                for (var i = 0; i < jSonData.length; i++) {
-                                                   str += "<tr><td>" + (i + 1) + "</td><td>" + jSonData[i].RoleName + "</td><td>";
-                                                   str += "<button id='" + jSonData[i].RoleId + "' onClick='onDelete(this)' type='button' class='btn btn-link'>Xóa</button>" + "</td></tr>";
+                                                   str += "<tr><td>" + (i + 1) + "</td><td>" + jSonData[i].RoleName + "</td>";
+                                                   str += "<td><button onClick='onDelete(" + jSonData[i].RoleId + ")'  type='button' class='btn btn-link'>Xóa</button>";
+                                                   str += "<button onClick='onUpdate(" + jSonData[i].RoleId + ")'  type='button' class='btn btn-link'>Chỉnh sửa</button>";
+                                                   str += "</td></tr>";
                                                }
                                                str += "</tbody></table>";
                                                $("#roleTable").html(str);
                                            });
     }
 
-    function onDelete(control) {
-        var id = control.id;
-        $('<div></div>').appendTo('body').html('<div><h6>Yes or No?</h6></div>').dialog({
+    function onDelete(id) {
+        $('<div></div>').appendTo('body').html('<div><h6>Bạn có thực muốn xóa quyền này?</h6></div>').dialog({
             modal: true,
-            title: 'Bạn có thực muốn xóa quyền này',
+            title: 'Chú ý',
             zIndex: 10000,
             autoOpen: true,
             width: 'auto',
             resizable: false,
             buttons: {
-                Yes: function () {
+                "Đồng ý": function () {
                     $.post("/Admin/DeleteRole", { roleId: id },
                                                        function (data) {
                                                            if (data == 0)
@@ -100,12 +110,28 @@
                                                        });
                     $(this).dialog("close");
                 },
-                No: function () {
+                "Bỏ qua": function () {
                     $(this).dialog("close");
                 }
             },
             close: function (event, ui) {
                 $(this).remove();
+            }
+        });
+    }
+
+    function onUpdate(id) {
+        $.ajax({
+            // Call EditPartialView action method
+            url: "/Admin/UpdateRole",
+            data: { roleId: id},
+            type: 'Get',
+            success: function (msg) {
+                $("#dialogUpdate").dialog("open");
+                $("#dialogUpdate").empty().append(msg);
+            },
+            error: function () {
+                alert("something seems wrong");
             }
         });
     }

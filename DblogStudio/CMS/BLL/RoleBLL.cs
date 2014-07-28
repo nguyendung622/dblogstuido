@@ -8,6 +8,24 @@ namespace CMS.BLL
 {
     public class RoleBLL
     {
+        public static Role Get(int id)
+        {
+            using (var db = new DblogStudioDBContext())
+            {
+                try
+                {
+                    var item = (from e in db.Roles
+                                where e.RoleId == id
+                                select e).SingleOrDefault();
+                    return item;
+                }
+                catch
+                {
+                    throw new Exception("Lỗi kiểm tra role");
+                }
+
+            }
+        }
         public static Role Create(string roleName)
         {
             using (var db = new DblogStudioDBContext())
@@ -87,9 +105,10 @@ namespace CMS.BLL
                                select e;
                     return item.ToList();
                 }
-                catch
+                catch (Exception ex)
                 {
-                    throw new Exception("Lỗi lấy danh sách Role");
+                    throw;
+                    //throw new Exception("Lỗi lấy danh sách Role");
                 }
 
             }

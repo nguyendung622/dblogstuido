@@ -1,0 +1,16 @@
+﻿@model CMS.Models.Role
+@using (Html.BeginForm("UpdateRole", "Admin", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    <div class="form-group">
+
+        <label for="inputNameRoleUpdate" class="col-sm-2 control-label">Quyền</label>
+        <div class="col-sm-10">
+            @Html.TextBoxFor(e => e.RoleName, new { @class = "form-control", id = "inputUpdateRole", placeholder = "Quyền" })
+        </div>
+    </div>
+    <div style="text-align: right">
+        <button id="editButton" type="button" class="btn btn-default">
+            Cập nhật
+        </button>
+    </div>
+}

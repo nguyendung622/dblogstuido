@@ -26,31 +26,7 @@ namespace CMS.Controllers
         [HttpPost]
         public ActionResult GetListRole()
         {
-            //            var table = new TagBuilder("table");
-            //            table.AddCssClass("table table-striped");
-            //            table.InnerHtml = @"
-            //                <thead>
-            //                    <tr>
-            //                        <th>#</th>
-            //                        <th>Role</th>
-            //                        <th>Thao tác</th>        
-            //                    </tr>
-            //                </thead>
-            //                <tbody>
-            //            ";
-            //            int i = 1;
-            //            foreach (var item in RoleBLL.GetAllRoles())
-            //            {
-            //                table.InnerHtml += string.Format("<tr><td>{0}</td><td>{1}</td><td>{2}</td></tr>", i++,item.RoleName,"Xóa");
-            //            }
-            //            table.InnerHtml += @"</tbody>";
             return Json(RoleBLL.GetAllRoles());
-        }
-
-        [HttpGet]
-        public ActionResult CreateRole()
-        {
-            return View();
         }
 
         [HttpPost]
@@ -88,6 +64,12 @@ namespace CMS.Controllers
              * return 0 nếu thất bại, 1 nếu thành công
              */
             return RoleBLL.Delete(roleId) ? 1 : 0;
+        }
+        
+        //[HttpGet]
+        public ActionResult UpdateRole(int roleId)
+        {
+            return PartialView(RoleBLL.Get(roleId));
         }
         #endregion
 
