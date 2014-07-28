@@ -16,33 +16,35 @@ namespace CMS.Controllers
             return View();
         }
 
+        #region Role manage
+
         public ActionResult RoleManage()
         {
             return View();
         }
 
         [HttpPost]
-        public string GetListRole()
+        public ActionResult GetListRole()
         {
-            var table = new TagBuilder("table");
-            table.AddCssClass("table table-striped");
-            table.InnerHtml = @"
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Role</th>
-                        <th>Thao tác</th>        
-                    </tr>
-                </thead>
-                <tbody>
-            ";
-            int i = 1;
-            foreach (var item in RoleBLL.GetAllRoles())
-            {
-                table.InnerHtml += string.Format("<tr><td>{0}</td><td>{1}</td><td>{2}</td></tr>", i++,item.RoleName,"Xóa");
-            }
-            table.InnerHtml += @"</tbody>";
-            return table.ToString();
+            //            var table = new TagBuilder("table");
+            //            table.AddCssClass("table table-striped");
+            //            table.InnerHtml = @"
+            //                <thead>
+            //                    <tr>
+            //                        <th>#</th>
+            //                        <th>Role</th>
+            //                        <th>Thao tác</th>        
+            //                    </tr>
+            //                </thead>
+            //                <tbody>
+            //            ";
+            //            int i = 1;
+            //            foreach (var item in RoleBLL.GetAllRoles())
+            //            {
+            //                table.InnerHtml += string.Format("<tr><td>{0}</td><td>{1}</td><td>{2}</td></tr>", i++,item.RoleName,"Xóa");
+            //            }
+            //            table.InnerHtml += @"</tbody>";
+            return Json(RoleBLL.GetAllRoles());
         }
 
         [HttpGet]
@@ -50,6 +52,7 @@ namespace CMS.Controllers
         {
             return View();
         }
+
         [HttpPost]
         public int CreateRole(string roleName)
         {
@@ -78,5 +81,16 @@ namespace CMS.Controllers
             }
             return 0;
         }
+
+        public int DeleteRole(int roleId)
+        {
+            /*
+             * return 0 nếu thất bại, 1 nếu thành công
+             */
+            return RoleBLL.Delete(roleId) ? 1 : 0;
+        }
+        #endregion
+
+
     }
 }

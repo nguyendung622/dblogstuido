@@ -6,33 +6,128 @@
 @Styles.Render("~/Content/themes/base/css")
 
 <h1 class="page-header">Quản lý quyền</h1>
-<button id="addButton" type="button" class="btn btn-default">Thêm mới</button>
+<div id="thongbao" style="margin: 0px 0px 10px; height: 50px">
+</div>
+@using (Html.BeginForm("", "", FormMethod.Post, new { role = "form", @class = "form-inline" }))
+{
+    <div class="input-group">
+        <input id="inputRoleName" title="Vui lòng nhập tên quyền" required="required" type="text" placeholder="Tên quyền" class="form-control">
+        <span class="input-group-btn">
+            <button id="addButton" type="button" class="btn btn-default">
+                Thêm mới
+            </button>
+        </span>
+    </div>
+}
+
 <h2 class="sub-header">Danh sách các quyền của hệ thống</h2>
 <div class="table-responsive" id="roleTable">
 </div>
-<div id="loading"><img src="~/Images/waiting-wheel-300x300.gif" width="80px" height="80px" /></div>
-<div id="dialog"></div>
+@*<div id="loading">
+    <img src="~/Images/waiting-wheel-300x300.gif" width="80px" height="80px" />
+</div>
+<div id="dialog"></div>*@
 <script type="text/javascript">
     $(function () {
-        $('#dialog').dialog({
-            autoOpen: false,
-            width: 400,
-            resizable: false,
-            title: 'Tạo mới',
-            modal: true,
-            draggable: false
-        });
+        //$('#dialog').dialog({
+        //    autoOpen: false,
+        //    width: 400,
+        //    resizable: false,
+        //    title: 'Tạo mới',
+        //    modal: true,
+        //    draggable: false
+        //});
+        $("#thongbao").visible = false;
 
         $('#addButton').click(function () {
-            //Load the CreateAlbumPartial action which will return 
-            // the partial view _CreateAlbumPartial
-            $('#dialog').load("@Url.Action("CreateRole", "Admin")",
-                function (response, status, xhr) {
-                    $('#dialog').dialog('open');
-                });
+            if ($("#inputRoleName").val() == "")
+                CreateNotify("alert-danger", "Chú ý!", "Bạn không thể để rỗng tên quyền");
+            else
+                $.post("/Admin/CreateRole", { "roleName": $("#inputRoleName").val() },
+                        function (data) {
+                            var str = "";
+                            if (data == 0) {
+                                CreateNotify("alert-danger", "Chú ý!", "Không thể tạo mới quyền này. Vui lòng kiểm tra lại");
+                            }
+                            else if (data == -1) {
+                                CreateNotify("alert-warning", "Chú ý!", "Quyền này đã tồn tại");
+                            }
+                            else {
+                                CreateNotify("alert-success", "Thành công!", "Đã thêm mới quyền thành công");
+                                GetListRole();
+                            }
+                            $("#inputRoleName").val("");
+                        });
         });
         GetListRole();
-
     });
+    function GetListRole() {
+        $.post("/Admin/GetListRole", { null: null },
+                                           function (data) {
+                                               var jSonData = data;
+                                               var str = "<table class='table table-striped'>";
+                                               str += "<thead><tr><th>#</th><th>Tên quyền</th><th>Thao tác</th></tr></thead>";
+                                               str += "<tbody>";
 
+                                               for (var i = 0; i < jSonData.length; i++) {
+                                                   str += "<tr><td>" + (i + 1) + "</td><td>" + jSonData[i].RoleName + "</td><td>";
+                                                   str += "<button id='" + jSonData[i].RoleId + "' onClick='onDelete(this)' type='button' class='btn btn-link'>Xóa</button>" + "</td></tr>";
+                                               }
+                                               str += "</tbody></table>";
+                                               $("#roleTable").html(str);
+                                           });
+    }
+
+    function onDelete(control) {
+        var id = control.id;
+        $('<div></div>').appendTo('body').html('<div><h6>Yes or No?</h6></div>').dialog({
+            modal: true,
+            title: 'Bạn có thực muốn xóa quyền này',
+            zIndex: 10000,
+            autoOpen: true,
+            width: 'auto',
+            resizable: false,
+            buttons: {
+                Yes: function () {
+                    $.post("/Admin/DeleteRole", { roleId: id },
+                                                       function (data) {
+                                                           if (data == 0)
+                                                               CreateNotify("alert-danger", "Thất bại!", "Không thể xóa quyền này");
+                                                           else {
+                                                               CreateNotify("alert-success", "Thành công!", "Đã xóa quyền thành công");
+                                                               GetListRole();
+                                                           }
+                                                       });
+                    $(this).dialog("close");
+                },
+                No: function () {
+                    $(this).dialog("close");
+                }
+            },
+            close: function (event, ui) {
+                $(this).remove();
+            }
+        });
+
+
+
+    }
+
+    function CreateNotify(type, title, content) {
+        /*
+        type = [alert-danger, alert-warning, alert-success]
+        */
+        var options = {};
+        options = { percent: 100 };
+        str = "<div class='alert alert-dismissible " + type + "' role='alert'>";
+        str += "<button type='button' class='close' data-dismiss='alert'><span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button>";
+        str += "<strong>" + title + "</strong> " + content + "</div>";
+        $("#thongbao").html(str);
+        $("#thongbao").show("clip", options, 500, null);
+    }
+    function callback() {
+        setTimeout(function () {
+            $("#thongbao:visible").removeAttr("style").fadeOut();
+        }, 30000);
+    };
 </script>

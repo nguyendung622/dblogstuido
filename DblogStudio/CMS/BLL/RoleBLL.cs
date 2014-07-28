@@ -43,6 +43,40 @@ namespace CMS.BLL
             }
 
         }
+
+        public static bool Delete(int roleId)
+        {
+            using (var db = new DblogStudioDBContext())
+            {
+                try
+                {
+                    var item = (from e in db.Roles
+                                where e.RoleId == roleId
+                                select e).SingleOrDefault();
+                    if (item == null || item.Members.Count > 0)
+                        return false;
+                    else
+                    {
+                        try
+                        {
+                            db.Roles.Remove(item);
+                            db.SaveChanges();
+                            return true;
+                        }
+                        catch
+                        {
+                            return false;
+                        }
+                    }
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+
+        }
+
         public static List<Role> GetAllRoles()
         {
             using (var db = new DblogStudioDBContext())
@@ -50,7 +84,7 @@ namespace CMS.BLL
                 try
                 {
                     var item = from e in db.Roles
-                                select e;
+                               select e;
                     return item.ToList();
                 }
                 catch
