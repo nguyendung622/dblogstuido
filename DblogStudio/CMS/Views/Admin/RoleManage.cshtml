@@ -6,7 +6,9 @@
 @Styles.Render("~/Content/themes/base/css")
 
 <h1 class="page-header">Quản lý quyền</h1>
+
 <img id="loading" src="~/Images/waiting-wheel-300x300.gif" />
+
 <div class="input-group">
     <input id="inputRoleName" title="Vui lòng nhập tên quyền" required="required" type="text" placeholder="Tên quyền" class="form-control">
     <span class="input-group-btn">
@@ -19,18 +21,19 @@
 </h2>
 <div class="table-responsive" id="roleTable">
 </div>
+
 <div id="updateForm" style="display: none">
     <form class="form-horizontal" role="form">
-        <div class="form-group">
+        <div id="formUpdateContent" class="form-group has-feedback">
             @Html.Hidden("idUpdateRole")
             <label for="inputNameRoleUpdate" class="col-sm-2 control-label">Quyền</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" id="inputUpdateRole" placeholder="Quyền" value="" />
+                <input type="text" class="form-control" id="inputUpdateRole" placeholder="Tên quyền không được để rỗng" value="" />
             </div>
         </div>
     </form>
     <div style="text-align: right">
-        <button id="editButton" onclick="onUpdateSubmit()" type="button" class="btn btn-default">
+        <button id="editButton" type="button" class="btn btn-default">
             Cập nhật
         </button>
     </div>
@@ -38,9 +41,6 @@
 
 <script type="text/javascript">
     $(function () {
-
-        $("#thongbao").visible = false;
-
         $('#addButton').click(function () {
             if ($("#inputRoleName").val() == "")
                 CreateNotify("alert-danger", "Chú ý!", "Bạn không thể để rỗng tên quyền");
@@ -61,6 +61,31 @@
                             $("#inputRoleName").val("");
                         });
         });
+
+        $("#editButton").click(function () {
+            if ($("#inputUpdateRole").val() == "") {
+                CreateNotify("alert-danger", "Chú ý!", "Bạn không thể để rỗng tên quyền");
+                $("#formUpdateContent").addClass("has-error");
+            }
+            else
+                $.post("/Admin/PostUpdateRole", { "roleId": $("#idUpdateRole").val(), "roleName": $("#inputUpdateRole").val() },
+                    function (data) {
+                        var str = "";
+                        if (data == -1)
+                            CreateNotify("alert-warning", "Chú ý!", "Tên quyền này đã tồn tại. Vui lòng kiểm tra lại");
+                        else if (data == 0)
+                            CreateNotify("alert-danger", "Chú ý!", "Cập nhật thất bại. Vui lòng kiểm tra lại");
+                        else if (data == 1) {
+                            CreateNotify("alert-success", "Thành công!", "Đã cập nhật quyền thành công");
+                            GetListRole();
+                        }
+                        else {
+                            CreateNotify("alert-danger", "Lỗi nghiêm trọng!", "Xin lỗi. Chúng tôi chưa nhận ra lỗi này. Vui lòng liên hệ tác giả để giải quyết");
+                        }
+                        $("#updateForm").dialog("close");
+                    });
+        });
+
         GetListRole();
     });
     function GetListRole() {
@@ -114,6 +139,7 @@
     }
 
     function onUpdate(id) {
+        $("#formUpdateContent").removeClass("has-error");
         $.post("/Admin/GetUpdateRole", { roleId: id },
             function (data) {
                 if (data == null)
@@ -136,20 +162,6 @@
                     });
                     GetListRole();
                 }
-            });
-    }
-    function onUpdateSubmit() {
-        $.post("/Admin/PostUpdateRole", { "roleId": $("#idUpdateRole").val(), "roleName": $("#inputUpdateRole").val() },
-            function (data) {
-                var str = "";
-                if (data == 0) {
-                    CreateNotify("alert-danger", "Chú ý!", "Cập nhật thất bại. Vui lòng kiểm tra lại");
-                }
-                else {
-                    CreateNotify("alert-success", "Thành công!", "Đã cập nhật quyền thành công");
-                    GetListRole();
-                }
-                $("#updateForm").dialog("close");
             });
     }
 </script>

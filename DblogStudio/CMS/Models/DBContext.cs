@@ -20,35 +20,72 @@ namespace CMS.Models
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             //base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<Membership>()
-                        .HasMany<Role>(r => r.Roles)
-                        .WithMany(u => u.Members)
-                        .Map(m =>
-                        {
-                            m.ToTable("webpages_UsersInRoles");
-                            m.MapLeftKey("UserId");
-                            m.MapRightKey("RoleId");
-                        });
+            //modelBuilder.Entity<Membership>()
+            //            .HasMany<Role>(r => r.Roles)
+            //            .WithMany(u => u.Members)
+            //            .Map(m =>
+            //            {
+            //                m.ToTable("webpages_UsersInRoles");
+            //                m.MapLeftKey("UserId");
+            //                m.MapRightKey("RoleId");
+            //            });
+            modelBuilder.Entity<UserProfile>()
+                .HasMany<Role>(r => r.Roles)
+                .WithMany(u => u.UserProfiles)
+                .Map(m =>
+                {
+                    m.ToTable("webpages_UsersInRoles");
+                    m.MapLeftKey("UserId");
+                    m.MapRightKey("RoleId");
+                });
         }
         public DbSet<Membership> Membership { get; set; }
         public DbSet<OAuthMembership> OAuthMembership { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<UserProfile> UserProfiles { get; set; }
-        public DbSet<ExtraUserProfile> ExtraUserProfile { get; set; }
         public DbSet<Subject> Subject { get; set; }
         public DbSet<Article> Article { get; set; }
         public DbSet<Notify> Notify { get; set; }
     }
 
+    [Table("UserProfile")]
+    public class UserProfile
+    {
+        [Key]
+        public int UserId { get; set; }
+        public string UserName { get; set; }
+        public string FullName { get; set; }
+        public string BirthDay { get; set; }
+        public string Department { get; set; }
+        public string StudentId { get; set; }
+        public virtual ICollection<Role> Roles { get; set; }
+    }
+
+    [Table("webpages_Roles")]
+    public class Role
+    {
+        [Key]
+        public int RoleId { get; set; }
+        [StringLength(256)]
+        public string RoleName { get; set; }
+        public virtual ICollection<UserProfile> UserProfiles { get; set; }
+    }
+
+
+
+    [Table("webpages_OAuthMembership")]
+    public class OAuthMembership
+    {
+        [Key, Column(Order = 0), StringLength(30)]
+        public string Provider { get; set; }
+        [Key, Column(Order = 1), StringLength(100)]
+        public string ProviderUserId { get; set; }
+        public int UserId { get; set; }
+    }
+
     [Table("webpages_Membership")]
     public class Membership
     {
-        public Membership()
-        {
-            Roles = new List<Role>();
-            OAuthMemberships = new List<OAuthMembership>();
-        }
-
         [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int UserId { get; set; }
         public DateTime? CreateDate { get; set; }
@@ -65,67 +102,6 @@ namespace CMS.Models
         [StringLength(128)]
         public string PasswordVerificationToken { get; set; }
         public DateTime? PasswordVerificationTokenExpirationDate { get; set; }
-
-        public ICollection<Role> Roles { get; set; }
-
-        [ForeignKey("UserId")]
-        public ICollection<OAuthMembership> OAuthMemberships { get; set; }
-    }
-
-    [Table("webpages_OAuthMembership")]
-    public class OAuthMembership
-    {
-        [Key, Column(Order = 0), StringLength(30)]
-        public string Provider { get; set; }
-
-        [Key, Column(Order = 1), StringLength(100)]
-        public string ProviderUserId { get; set; }
-
-        public int UserId { get; set; }
-
-        [Column("UserId"), InverseProperty("OAuthMemberships")]
-        public Membership User { get; set; }
-    }
-
-    [Table("webpages_Roles")]
-    public class Role
-    {
-        public Role()
-        {
-            Members = new List<Membership>();
-        }
-
-        [Key]
-        [DatabaseGenerated(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.Identity)]
-        public int RoleId { get; set; }
-        [StringLength(256)]
-        public string RoleName { get; set; }
-
-        public ICollection<Membership> Members { get; set; }
-    }
-
-
-    [Table("UserProfile")]
-    public class UserProfile
-    {
-        [Key]
-        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
-        public int UserId { get; set; }
-        public string UserName { get; set; }
-    }
-
-    [Table("ExtraUserProfile")]
-    public class ExtraUserProfile
-    {
-        [Key]
-        public int UserId { get; set; }
-        public string UserName { get; set; }
-        public string FullName { get; set; }
-        public string BirthDay { get; set; }
-        public string Department { get; set; }
-        [Required]
-        public int Role { get; set; }
-        public string StudentId { get; set; }
     }
 
     [Table("Subject")]
@@ -152,7 +128,7 @@ namespace CMS.Models
         public string PublicDate { get; set; }
         public int UserId { get; set; }
         [ForeignKey("UserId")]
-        public virtual ExtraUserProfile User { get; set; }
+        public virtual UserProfile User { get; set; }
         public int SubjectId { get; set; }
         [ForeignKey("SubjectId")]
         public virtual Subject Subject { get; set; }

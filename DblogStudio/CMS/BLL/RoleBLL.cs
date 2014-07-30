@@ -26,22 +26,38 @@ namespace CMS.BLL
 
             }
         }
-        public static Role Create(string roleName)
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="roleName"></param>
+        /// <returns>
+        /// -2: nếu roleName rỗng
+        /// -1: nếu trùng
+        /// 0: nếu thất bại
+        /// 1: nếu thành công
+        /// </returns>
+        public static int Create(string roleName)
         {
             using (var db = new DblogStudioDBContext())
             {
                 try
                 {
+                    if (string.IsNullOrEmpty(roleName))
+                        return -2;
+                    if (RoleBLL.RoleExists(roleName))
+                        return -1;
                     var item = db.Roles.Add(new Role { RoleName = roleName });
                     db.SaveChanges();
-                    return item;
+                    return 1;
                 }
                 catch
                 {
-                    return null;
+                    return 0;
                 }
             }
         }
+
         public static bool RoleExists(string roleName)
         {
             using (var db = new DblogStudioDBContext())
@@ -59,23 +75,44 @@ namespace CMS.BLL
                 }
             }
         }
-        public static Role Update(Role role)
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="role"></param>
+        /// <returns>
+        /// -2: nếu tên rỗng
+        /// -1: nếu trùng RoleName
+        /// 0: nếu cập nhật thất bại (không tìm thấy role)
+        /// 1: thành công
+        /// </returns>
+        public static int Update(Role role)
         {
             using (var db = new DblogStudioDBContext())
             {
                 try
                 {
-                    var item = (from e in db.Roles
-                                where e.RoleId == role.RoleId
-                                select e).SingleOrDefault();
-                    if (item == null)
-                        return null;
-                    else
+                    if (string.IsNullOrEmpty(role.RoleName))
+                        return -2;
+                    var testItem = (from e in db.Roles
+                                    where e.RoleName == role.RoleName && e.RoleId != role.RoleId
+                                    select e).SingleOrDefault();
+                    if (testItem == null)
                     {
-                        item.RoleName = role.RoleName;
-                        db.SaveChanges();
-                        return role;
+                        var item = (from e in db.Roles
+                                    where e.RoleId == role.RoleId
+                                    select e).SingleOrDefault();
+                        if (item == null)
+                            return 0;
+                        else
+                        {
+                            item.RoleName = role.RoleName;
+                            db.SaveChanges();
+                            return 1;
+                        }
                     }
+                    else
+                        return -1;
                 }
                 catch
                 {
@@ -84,6 +121,7 @@ namespace CMS.BLL
 
             }
         }
+
         public static bool Delete(int roleId)
         {
             using (var db = new DblogStudioDBContext())
@@ -93,7 +131,7 @@ namespace CMS.BLL
                     var item = (from e in db.Roles
                                 where e.RoleId == roleId
                                 select e).SingleOrDefault();
-                    if (item == null || item.Members.Count > 0)
+                    if (item == null || item.UserProfiles.Count > 0)
                         return false;
                     else
                     {
