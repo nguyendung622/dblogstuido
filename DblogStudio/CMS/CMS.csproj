@@ -281,7 +281,7 @@
     <Content Include="Images\Slide\sunset.jpg" />
     <Content Include="Images\Slide\wood.jpg" />
     <Content Include="Images\waiting-wheel-300x300.gif" />
-    <Content Include="Scripts\admin.js" />
+    <Content Include="Scripts\script.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-1.11.1.min.js" />

@@ -6,7 +6,7 @@
 @Styles.Render("~/Content/themes/base/css")
 
 <h1 class="page-header">Quản lý quyền</h1>
-
+<img id="loading" src="~/Images/waiting-wheel-300x300.gif" />
 <div class="input-group">
     <input id="inputRoleName" title="Vui lòng nhập tên quyền" required="required" type="text" placeholder="Tên quyền" class="form-control">
     <span class="input-group-btn">
@@ -15,37 +15,30 @@
         </button>
     </span>
 </div>
-<h2 class="sub-header">Danh sách các quyền của hệ thống</h2>
+<h2 class="sub-header">Danh sách các quyền của hệ thống
+</h2>
 <div class="table-responsive" id="roleTable">
 </div>
-@*<div id="loading">
-    <img src="~/Images/waiting-wheel-300x300.gif" width="80px" height="80px" />
-</div>*@
-<div id="dialogUpdate">
+<div id="updateForm" style="display: none">
+    <form class="form-horizontal" role="form">
+        <div class="form-group">
+            @Html.Hidden("idUpdateRole")
+            <label for="inputNameRoleUpdate" class="col-sm-2 control-label">Quyền</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="inputUpdateRole" placeholder="Quyền" value="" />
+            </div>
+        </div>
+    </form>
+    <div style="text-align: right">
+        <button id="editButton" onclick="onUpdateSubmit()" type="button" class="btn btn-default">
+            Cập nhật
+        </button>
+    </div>
 </div>
-<div id="thongbao" style="position: fixed; bottom: 0px">
-</div>
+
 <script type="text/javascript">
     $(function () {
-        $('#dialogUpdate').dialog({
-            autoOpen: false,
-            width: 400,
-            resizable: false,
-            title: 'Cập nhật',
-            modal: true,
-            draggable: false,
-            //buttons: {
-            //    "Đồng ý": function () {
-            //        $(this).dialog("close");
-            //    },
-            //    "Bỏ qua": function () {
-            //        $(this).dialog("close");
-            //    }
-            //},
-            close: function (event, ui) {
-                //$(this).remove();
-            }
-        });
+
         $("#thongbao").visible = false;
 
         $('#addButton').click(function () {
@@ -72,21 +65,21 @@
     });
     function GetListRole() {
         $.post("/Admin/GetListRole", { null: null },
-                                           function (data) {
-                                               var jSonData = data;
-                                               var str = "<table class='table table-striped'>";
-                                               str += "<thead><tr><th>#</th><th>Tên quyền</th><th>Thao tác</th></tr></thead>";
-                                               str += "<tbody>";
+            function (data) {
+                var jSonData = data;
+                var str = "<table class='table table-striped'>";
+                str += "<thead><tr><th>#</th><th>Tên quyền</th><th>Thao tác</th></tr></thead>";
+                str += "<tbody>";
 
-                                               for (var i = 0; i < jSonData.length; i++) {
-                                                   str += "<tr><td>" + (i + 1) + "</td><td>" + jSonData[i].RoleName + "</td>";
-                                                   str += "<td><button onClick='onDelete(" + jSonData[i].RoleId + ")'  type='button' class='btn btn-link'>Xóa</button>";
-                                                   str += "<button onClick='onUpdate(" + jSonData[i].RoleId + ")'  type='button' class='btn btn-link'>Chỉnh sửa</button>";
-                                                   str += "</td></tr>";
-                                               }
-                                               str += "</tbody></table>";
-                                               $("#roleTable").html(str);
-                                           });
+                for (var i = 0; i < jSonData.length; i++) {
+                    str += "<tr><td>" + (i + 1) + "</td><td>" + jSonData[i].RoleName + "</td>";
+                    str += "<td><button onClick='onDelete(" + jSonData[i].RoleId + ")'  type='button' class='btn btn-link'>Xóa</button>";
+                    str += "<button onClick='onUpdate(" + jSonData[i].RoleId + ")'  type='button' class='btn btn-link'>Chỉnh sửa</button>";
+                    str += "</td></tr>";
+                }
+                str += "</tbody></table>";
+                $("#roleTable").html(str);
+            });
     }
 
     function onDelete(id) {
@@ -121,36 +114,42 @@
     }
 
     function onUpdate(id) {
-        $.ajax({
-            // Call EditPartialView action method
-            url: "/Admin/UpdateRole",
-            data: { roleId: id},
-            type: 'Get',
-            success: function (msg) {
-                $("#dialogUpdate").dialog("open");
-                $("#dialogUpdate").empty().append(msg);
-            },
-            error: function () {
-                alert("something seems wrong");
-            }
-        });
+        $.post("/Admin/GetUpdateRole", { roleId: id },
+            function (data) {
+                if (data == null)
+                    CreateNotify("alert-danger", "Thất bại!", "Không thể cập nhật quyền lúc này");
+                else {
+                    $("#idUpdateRole").val(data.RoleId);
+                    $("#inputUpdateRole").val(data.RoleName);
+                    $("#updateForm").visible = true;
+                    $("#updateForm").dialog({
+                        autoOpen: true,
+                        width: 400,
+                        resizable: false,
+                        title: 'Cập nhật',
+                        modal: true,
+                        draggable: false,
+                        close: function (event, ui) {
+                            //$(this).remove();
+                            $("#updateForm").visible = false;
+                        }
+                    });
+                    GetListRole();
+                }
+            });
     }
-
-    function CreateNotify(type, title, content) {
-        /*
-        type = [alert-danger, alert-warning, alert-success]
-        */
-        var options = {};
-        options = { percent: 100 };
-        str = "<div class='alert alert-dismissible " + type + "' role='alert'>";
-        str += "<button type='button' class='close' data-dismiss='alert'><span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button>";
-        str += "<strong>" + title + "</strong> " + content + "</div>";
-        $("#thongbao").html(str);
-        $("#thongbao").show("clip", options, 500, null);
+    function onUpdateSubmit() {
+        $.post("/Admin/PostUpdateRole", { "roleId": $("#idUpdateRole").val(), "roleName": $("#inputUpdateRole").val() },
+            function (data) {
+                var str = "";
+                if (data == 0) {
+                    CreateNotify("alert-danger", "Chú ý!", "Cập nhật thất bại. Vui lòng kiểm tra lại");
+                }
+                else {
+                    CreateNotify("alert-success", "Thành công!", "Đã cập nhật quyền thành công");
+                    GetListRole();
+                }
+                $("#updateForm").dialog("close");
+            });
     }
-    function callback() {
-        setTimeout(function () {
-            $("#thongbao:visible").removeAttr("style").fadeOut();
-        }, 30000);
-    };
 </script>

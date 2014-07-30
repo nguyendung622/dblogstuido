@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using CMS.BLL;
+using CMS.Models;
 namespace CMS.Controllers
 {
     public class AdminController : Controller
@@ -65,11 +66,18 @@ namespace CMS.Controllers
              */
             return RoleBLL.Delete(roleId) ? 1 : 0;
         }
-        
-        //[HttpGet]
-        public ActionResult UpdateRole(int roleId)
+
+        public ActionResult GetUpdateRole(int roleId)
         {
-            return PartialView(RoleBLL.Get(roleId));
+            //return PartialView("UpdateRole", RoleBLL.GetByID(roleId));
+            return Json(RoleBLL.GetByID(roleId));
+        }
+        public int PostUpdateRole(Role role)
+        {
+            if (RoleBLL.Update(role) == null)
+                return 0;
+            else
+                return 1;
         }
         #endregion
 

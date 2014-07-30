@@ -8,7 +8,7 @@ namespace CMS.BLL
 {
     public class RoleBLL
     {
-        public static Role Get(int id)
+        public static Role GetByID(int id)
         {
             using (var db = new DblogStudioDBContext())
             {
@@ -57,11 +57,33 @@ namespace CMS.BLL
                 {
                     throw new Exception("Lỗi kiểm tra role");
                 }
+            }
+        }
+        public static Role Update(Role role)
+        {
+            using (var db = new DblogStudioDBContext())
+            {
+                try
+                {
+                    var item = (from e in db.Roles
+                                where e.RoleId == role.RoleId
+                                select e).SingleOrDefault();
+                    if (item == null)
+                        return null;
+                    else
+                    {
+                        item.RoleName = role.RoleName;
+                        db.SaveChanges();
+                        return role;
+                    }
+                }
+                catch
+                {
+                    throw new Exception("Lỗi update role");
+                }
 
             }
-
         }
-
         public static bool Delete(int roleId)
         {
             using (var db = new DblogStudioDBContext())

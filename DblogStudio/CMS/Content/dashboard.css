@@ -1,3 +1,10 @@
+#loading {
+    height:60px;
+    width:60px;
+    position:fixed;
+    top:50px; 
+    right:100px
+}
 .ui-widget {
     font-family:inherit;
     font-size:inherit;
