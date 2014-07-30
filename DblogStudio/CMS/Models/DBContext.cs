@@ -14,21 +14,12 @@ namespace CMS.Models
             : base("DefaultConnection")
         {
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<DblogStudioDBContext, Migrations.Configuration>("DefaultConnection"));
+            this.Configuration.LazyLoadingEnabled = false;
             //Database.SetInitializer<DblogStudioDBContext>(new DropCreateDatabaseIfModelChanges<DblogStudioDBContext>());
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            //base.OnModelCreating(modelBuilder);
-            //modelBuilder.Entity<Membership>()
-            //            .HasMany<Role>(r => r.Roles)
-            //            .WithMany(u => u.Members)
-            //            .Map(m =>
-            //            {
-            //                m.ToTable("webpages_UsersInRoles");
-            //                m.MapLeftKey("UserId");
-            //                m.MapRightKey("RoleId");
-            //            });
             modelBuilder.Entity<UserProfile>()
                 .HasMany<Role>(r => r.Roles)
                 .WithMany(u => u.UserProfiles)
@@ -68,7 +59,7 @@ namespace CMS.Models
         public int RoleId { get; set; }
         [StringLength(256)]
         public string RoleName { get; set; }
-        public virtual ICollection<UserProfile> UserProfiles { get; set; }
+        public virtual List<UserProfile> UserProfiles { get; set; }
     }
 
 

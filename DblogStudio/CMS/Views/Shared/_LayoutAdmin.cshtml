@@ -52,9 +52,19 @@
         <div class="row">
             <div class="col-sm-3 col-md-2 sidebar">
                 <ul class="nav nav-sidebar">
-                    <li><a href="#">Phân tích lưu lượng</a></li>
-                    <li><a href="#">Quản lý người sử dụng</a></li>
-                    <li>@Html.ActionLink("Quản lý quyền", "RoleManage", "Admin")</li>
+                    <li><a href="#">Analytics traffic</a></li>
+                    <li><a href="#">Users</a>
+                        <ul>
+                            <li>@Html.ActionLink("Quản lý User", "RoleManage", "Admin")</li>
+                             <li>@Html.ActionLink("User và Role", "RoleManage", "Admin")</li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Roles</a>
+                        <ul>
+                            <li>@Html.ActionLink("Quản lý Role", "RoleManage", "Admin")</li>
+                             <li>@Html.ActionLink("Role và User", "RoleManage", "Admin")</li>
+                        </ul>
+                    </li>
                 </ul>
                 <hr class="featurette-divider" style="margin: 0px">
                 <ul class="nav nav-sidebar">

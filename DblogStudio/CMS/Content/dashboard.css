@@ -1,3 +1,24 @@
+.nav-sidebar ul {
+    display:none;
+    list-style:none;
+    position:relative;
+    width:inherit;
+    margin:0px;
+    padding:0px;
+}
+.nav-sidebar a{
+    text-decoration:none;
+}
+.nav-sidebar li:hover ul {
+    display:block;
+}
+.nav-sidebar li li {
+
+    padding:10px 5px 10px 40px;
+}
+.nav-sidebar li li:hover {
+    background-color:#EEEEEE;
+}
 #loading {
     height:60px;
     width:60px;

@@ -27,7 +27,8 @@ namespace CMS.Controllers
         [HttpPost]
         public ActionResult GetListRole()
         {
-            return Json(RoleBLL.GetAllRoles());
+            var list = RoleBLL.GetAllRoles();
+            return Json(list);
         }
 
         /// <summary>
