@@ -15,6 +15,7 @@ namespace CMS.Models
         {
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<DblogStudioDBContext, Migrations.Configuration>("DefaultConnection"));
             this.Configuration.LazyLoadingEnabled = false;
+            this.Configuration.ProxyCreationEnabled = false;
             //Database.SetInitializer<DblogStudioDBContext>(new DropCreateDatabaseIfModelChanges<DblogStudioDBContext>());
         }
 

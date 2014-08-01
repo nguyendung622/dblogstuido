@@ -1,21 +1,12 @@
 ﻿@{
-    ViewBag.Title = "RoleManage";
+    ViewBag.Title = "UserManage";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<h1 class="page-header">Quản lý quyền</h1>
-
+<h1 class="page-header">Quản lý user</h1>
 <img id="loading" src="~/Images/waiting-wheel-300x300.gif" />
 
-<div class="input-group">
-    <input id="inputRoleName" title="Vui lòng nhập tên quyền" required="required" type="text" placeholder="Tên quyền" class="form-control">
-    <span class="input-group-btn">
-        <button id="addButton" type="button" class="btn btn-default">
-            Thêm mới
-        </button>
-    </span>
-</div>
-<h2 class="sub-header">Danh sách các quyền của hệ thống
+<h2 class="sub-header">Danh sách các user của hệ thống
 </h2>
 <div class="table-responsive" id="roleTable">
 </div>
@@ -39,27 +30,6 @@
 
 <script type="text/javascript">
     $(function () {
-        $('#addButton').click(function () {
-            if ($("#inputRoleName").val() == "")
-                CreateNotify("alert-danger", "Chú ý!", "Bạn không thể để rỗng tên quyền");
-            else
-                $.post("/Admin/CreateRole", { "roleName": $("#inputRoleName").val() },
-                        function (data) {
-                            var str = "";
-                            if (data == 0) {
-                                CreateNotify("alert-danger", "Chú ý!", "Không thể tạo mới quyền này. Vui lòng kiểm tra lại");
-                            }
-                            else if (data == -1) {
-                                CreateNotify("alert-warning", "Chú ý!", "Quyền này đã tồn tại");
-                            }
-                            else {
-                                CreateNotify("alert-success", "Thành công!", "Đã thêm mới quyền thành công");
-                                GetListRole();
-                            }
-                            $("#inputRoleName").val("");
-                        });
-        });
-
         $("#editButton").click(function () {
             if ($("#inputUpdateRole").val() == "") {
                 CreateNotify("alert-danger", "Chú ý!", "Bạn không thể để rỗng tên quyền");
@@ -84,20 +54,26 @@
                     });
         });
 
-        GetListRole();
+        GetListUser();
     });
-    function GetListRole() {
-        $.post("/Admin/GetListRole", { null: null },
+    function GetListUser() {
+        $.post("/Admin/GetListUser", { null: null },
             function (data) {
                 var jSonData = data;
                 var str = "<table class='table table-striped'>";
-                str += "<thead><tr><th>#</th><th>Tên quyền</th><th>Thao tác</th></tr></thead>";
+                str += "<thead><tr><th>#</th><th>User Name</th><th>Full Name</th><th>Birthday</th><th>Department</th><th>StudentID</th><th>Roles</th><th>Thao tác</th></tr></thead>";
                 str += "<tbody>";
 
                 for (var i = 0; i < jSonData.length; i++) {
-                    str += "<tr><td>" + (i + 1) + "</td><td>" + jSonData[i].RoleName + "</td>";
-                    str += "<td><button onClick='onDelete(" + jSonData[i].RoleId + ")'  type='button' class='btn btn-link'>Xóa</button>";
-                    str += "<button onClick='onUpdate(" + jSonData[i].RoleId + ")'  type='button' class='btn btn-link'>Chỉnh sửa</button>";
+                    str += "<tr><td>" + (i + 1) + "</td>";
+                    str += "<td>" + jSonData[i].UserName + "</td>";
+                    str += "<td>" + jSonData[i].FullName + "</td>";
+                    str += "<td>" + jSonData[i].BirthDay + "</td>";
+                    str += "<td>" + jSonData[i].Department + "</td>";
+                    str += "<td>" + jSonData[i].StudentId + "</td>";
+                    str += "<td>" + jSonData[i].Roles + "</td>";
+                    str += "<td><button onClick='onDelete(" + jSonData[i].UserId + ")'  type='button' class='btn btn-link'>Xóa</button>";
+                    str += "<button onClick='onDelete(" + jSonData[i].UserId + ")'  type='button' class='btn btn-link'>Gán role</button>";
                     str += "</td></tr>";
                 }
                 str += "</tbody></table>";
@@ -106,7 +82,7 @@
     }
 
     function onDelete(id) {
-        $('<div></div>').appendTo('body').html('<div><h6>Bạn có thực muốn xóa quyền này?</h6></div>').dialog({
+        $('<div></div>').appendTo('body').html('<div><h6>Bạn có thực muốn xóa user này?</h6></div>').dialog({
             modal: true,
             title: 'Chú ý',
             zIndex: 10000,
@@ -115,13 +91,13 @@
             resizable: false,
             buttons: {
                 "Đồng ý": function () {
-                    $.post("/Admin/DeleteRole", { roleId: id },
+                    $.post("/Admin/DeleteUser", { userId: id },
                                                        function (data) {
                                                            if (data == 0)
-                                                               CreateNotify("alert-danger", "Thất bại!", "Không thể xóa quyền này");
+                                                               CreateNotify("alert-danger", "Thất bại!", "Không thể xóa user này");
                                                            else {
-                                                               CreateNotify("alert-success", "Thành công!", "Đã xóa quyền thành công");
-                                                               GetListRole();
+                                                               CreateNotify("alert-success", "Thành công!", "Đã xóa user thành công");
+                                                               GetListUser();
                                                            }
                                                        });
                     $(this).dialog("close");

@@ -70,5 +70,43 @@ namespace CMS.Controllers
             return RoleBLL.Update(role);
         }
         #endregion
+
+        #region UserManage
+
+        public ActionResult UserManage()
+        {
+            return View();
+        }
+
+        public ActionResult GetListUser()
+        {
+            var list = UserBLL.GetAllUser();
+
+            return Json(list.Select(e => new
+            {
+                UserId = e.UserId,
+                UserName = e.UserName,
+                FullName = e.FullName,
+                BirthDay = e.BirthDay,
+                Department = e.Department,
+                StudentId = e.StudentId,
+                Roles = e.Roles.Select(t => t.RoleName)
+            }));
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns>
+        /// 0: Nếu  thất bại
+        /// 1: Nếu thành công
+        /// </returns>
+        public int DeleteUser(int userId)
+        {
+            return UserBLL.Delete(userId) ? 1 : 0;
+        }
+
+        #endregion
     }
 }
