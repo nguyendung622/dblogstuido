@@ -2,12 +2,22 @@
     ViewBag.Title = "UserManage";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
+@model List<CMS.Models.Role>
+@{
+    List<SelectListItem> listRole = new List<SelectListItem>();
+    listRole.Add(new SelectListItem { Selected = true, Text = "Tất cả", Value = "-1" });
+    foreach (var item in Model)
+    {
+        listRole.Add(new SelectListItem { Selected = false, Text = item.RoleName, Value = item.RoleId.ToString() });
+    }
+}
 
 <h1 class="page-header">Quản lý user</h1>
 <img id="loading" src="~/Images/waiting-wheel-300x300.gif" />
 
 <h2 class="sub-header">Danh sách các user của hệ thống
 </h2>
+Chọn Role: @Html.DropDownList("DanhsachRole", listRole, new { onchange = "GetListUser()" })
 <div class="table-responsive" id="roleTable">
 </div>
 
@@ -57,7 +67,8 @@
         GetListUser();
     });
     function GetListUser() {
-        $.post("/Admin/GetListUser", { null: null },
+        var idRole = $("#DanhsachRole").val();
+        $.post("/Admin/GetListUser", { roleId: idRole },
             function (data) {
                 var jSonData = data;
                 var str = "<table class='table table-striped'>";

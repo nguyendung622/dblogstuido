@@ -75,12 +75,13 @@ namespace CMS.Controllers
 
         public ActionResult UserManage()
         {
-            return View();
+            var lsRole = RoleBLL.GetAllRoles();
+            return View(lsRole);
         }
 
-        public ActionResult GetListUser()
+        public ActionResult GetListUser(int roleId = -1)
         {
-            var list = UserBLL.GetAllUser();
+            var list = UserBLL.GetAllUser(roleId);
 
             return Json(list.Select(e => new
             {
