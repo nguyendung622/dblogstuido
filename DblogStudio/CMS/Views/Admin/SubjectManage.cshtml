@@ -1,0 +1,103 @@
+﻿@{
+    ViewBag.Title = "SubjectManage";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<h1 class="page-header">Quản lý chủ đề</h1>
+<img id="loading" src="~/Images/waiting-wheel-300x300.gif" />
+<button id="add" type="button" class="btn btn-default">Thêm mới</button>
+<h2 class="sub-header">Danh sách các chủ đề của hệ thống</h2>
+<div class="table-responsive" id="roleTable"></div>
+<div id="dialog" style="display: none"></div>
+<script type="text/javascript">
+    $(function () {
+        $("#add").click(function () {
+            $("#dialog").dialog({
+                autoOpen: false,
+                width: 600,
+                resizable: false,
+                title: 'Thêm mới',
+                modal: true,
+                draggable: false,
+                close: function (event, ui) {
+                    //$(this).remove();
+                    $("#dialog").empty();
+                }
+            });
+            $('#dialog').load("@Url.Action("CreateOrUpdateSubject")", { idSubject: -1 },
+                        function (response, status, xhr) {
+                            $('#dialog').dialog('open');
+                        });
+        });
+        GetListSubject();
+    });
+    function GetListSubject() {
+        $.post("/Admin/GetListSubject", { null: null },
+            function (data) {
+                var jSonData = data;
+                var str = "<table class='table table-striped'>";
+                str += "<thead><tr><th>#</th><th>Tên chủ đề</th><th>Số bài viết</th><th>Group</th><th>Thao tác</th></tr></thead>";
+                str += "<tbody>";
+
+                for (var i = 0; i < jSonData.length; i++) {
+                    str += "<tr><td>" + (i + 1) + "</td><td>" + jSonData[i].Name + "</td>";
+                    str += "<td>" + jSonData[i].TotalArticle + "</td>";
+                    str += "<td>" + jSonData[i].Group + "</td>";
+                    str += "<td><button onClick='onDelete(" + jSonData[i].Id + ")'  type='button' class='btn btn-link'>Xóa</button>";
+                    str += "<button onClick='onUpdate(" + jSonData[i].Id + ")'  type='button' class='btn btn-link'>Chỉnh sửa</button>";
+                    str += "</td></tr>";
+                }
+                str += "</tbody></table>";
+                $("#roleTable").html(str);
+            });
+    }
+
+    function onUpdate(id) {
+        $("#dialog").dialog({
+            autoOpen: false,
+            width: 600,
+            resizable: false,
+            title: 'Cập nhật',
+            modal: true,
+            draggable: false,
+            close: function (event, ui) {
+                //$(this).remove();
+                $("#dialog").empty();
+            }
+        });
+        $('#dialog').load("@Url.Action("CreateOrUpdateSubject")", { idSubject: id },
+                    function (response, status, xhr) {
+                        $('#dialog').dialog('open');
+                    });
+    }
+    function onDelete(id) {
+        $('<div></div>').appendTo('body').html('<div><h6>Bạn có thực muốn xóa chủ đề này?</h6></div>').dialog({
+            modal: true,
+            title: 'Chú ý',
+            zIndex: 10000,
+            autoOpen: true,
+            width: 'auto',
+            resizable: false,
+            buttons: {
+                "Đồng ý": function () {
+                    $.post("/Admin/DeleteSubject", { subjectId: id },
+                                                       function (data) {
+                                                           if (data == 0)
+                                                               CreateNotify("alert-danger", "Thất bại!", "Không thể xóa chủ đề này");
+                                                           else {
+                                                               CreateNotify("alert-success", "Thành công!", "Đã xóa chủ đề thành công");
+                                                               GetListSubject();
+                                                           }
+                                                       });
+                    $(this).dialog("close");
+                },
+                "Bỏ qua": function () {
+                    $(this).dialog("close");
+                }
+            },
+            close: function (event, ui) {
+                $(this).remove();
+            }
+        });
+    }
+</script>
+

@@ -188,6 +188,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="BLL\RoleBLL.cs" />
+    <Compile Include="BLL\SubjectBLL.cs" />
     <Compile Include="BLL\UserBLL.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
@@ -347,8 +348,9 @@
     <Content Include="Views\Shared\_LayoutAdmin.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Admin\RoleManage.cshtml" />
-    <Content Include="Views\Admin\UpdateRole.cshtml" />
     <Content Include="Views\Admin\UserManage.cshtml" />
+    <Content Include="Views\Admin\SubjectManage.cshtml" />
+    <Content Include="Views\Admin\CreateOrUpdateSubject.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

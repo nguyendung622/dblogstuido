@@ -1,0 +1,102 @@
+﻿@model CMS.Models.Subject
+<div id="addSubject">
+    <h3 style="margin-top: 0px">
+        @if (Model.Id == -1)
+        {
+            @Html.DisplayText("Thêm mới")
+        }
+        else
+        {
+            @Html.DisplayText("Cập nhật")
+        }
+
+    </h3>
+    <div id="listGroup" class="dropdown col-sm-2">
+        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
+            Chọn nhóm:
+    <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Đại cương</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Cơ sở</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Chuyên ngành</a></li>
+        </ul>
+    </div>
+    <h4 style="position: relative; top: -6px; left: 14px" class="col-sm-10">
+        <span id="nameGroupSelected" class="label label-default">
+            @Html.DisplayTextFor(model => model.Group)
+        </span>
+    </h4>
+    <div class="col-sm-12" style="padding-bottom: 10px">
+        <input id="inputSubjectName" title="Vui lòng nhập tên chủ đề" required="required" type="text" value="@Model.Name" placeholder="Tên chủ đề" class="form-control col-sm-12" />
+        <div class="col-sm-12" style="text-align: right; margin-top: 10px; padding-right: 0px">
+            @if (Model.Id == -1)
+            {
+                <button id="addButton" type="button" class="btn btn-default">
+                    Thêm mới
+                </button>
+            }
+            else
+            {
+                @Html.HiddenFor(model => model.Id, new { id = "idUpdateSubject" })
+                <button id="editButton" type="button" class="btn btn-default">
+                    Cập nhật
+                </button>
+            }
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("#nameGroupSelected").text("@Model.Group");
+        $("#listGroup li a").click(function () {
+            var yourText = $(this).text();
+            $("#nameGroupSelected").text(yourText);
+        });
+        $('#addButton').click(function () {
+            if ($("#inputSubjectName").val() == "")
+                CreateNotify("alert-danger", "Chú ý!", "Bạn không thể để rỗng tên chủ đề");
+            else
+                $.post("/Admin/CreateSubject", { "name": $("#inputSubjectName").val(), "group": $("#nameGroupSelected").text() },
+                        function (data) {
+                            var str = "";
+                            if (data == 0) {
+                                CreateNotify("alert-danger", "Chú ý!", "Không thể tạo mới chủ đề này. Vui lòng kiểm tra lại");
+                            }
+                            else if (data == -1) {
+                                CreateNotify("alert-warning", "Chú ý!", "Chủ đề này đã tồn tại");
+                            }
+                            else {
+                                CreateNotify("alert-success", "Thành công!", "Đã thêm mới chủ đề thành công");
+                                GetListSubject();
+                            }
+                            $("#inputSubjectName").val("");
+                        });
+        });
+
+        $("#editButton").click(function () {
+            if ($("#inputUpdateSubject").val() == "") {
+                CreateNotify("alert-danger", "Chú ý!", "Bạn không thể để rỗng tên chủ đề");
+                $("#formUpdateContent").addClass("has-error");
+            }
+            else
+                $.post("/Admin/PostUpdateSubject", { "Id": $("#idUpdateSubject").val(), "Name": $("#inputSubjectName").val(), "Group": $("#nameGroupSelected").text() },
+                    function (data) {
+                        var str = "";
+                        if (data == -1)
+                            CreateNotify("alert-warning", "Chú ý!", "Tên chủ đề này đã tồn tại. Vui lòng kiểm tra lại");
+                        else if (data == 0)
+                            CreateNotify("alert-danger", "Chú ý!", "Cập nhật thất bại. Vui lòng kiểm tra lại");
+                        else if (data == 1) {
+                            CreateNotify("alert-success", "Thành công!", "Đã cập nhật chủ đề thành công");
+                            GetListSubject();
+                        }
+                        else {
+                            CreateNotify("alert-danger", "Lỗi nghiêm trọng!", "Xin lỗi. Chúng tôi chưa nhận ra lỗi này. Vui lòng liên hệ tác giả để giải quyết");
+                        }
+                        $("#dialog").dialog("close");
+                    });
+        });
+    });
+
+</script>

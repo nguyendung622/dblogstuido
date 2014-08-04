@@ -109,5 +109,72 @@ namespace CMS.Controllers
         }
 
         #endregion
+
+        #region
+
+        public ActionResult SubjectManage()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult GetListSubject()
+        {
+            var list = SubjectBLL.GetAllSubjects();
+            return Json(list);
+        }
+
+        //[HttpGet]
+        public ActionResult CreateOrUpdateSubject(int idSubject = -1)
+        {
+            if (idSubject != -1)
+            {
+                var subject = SubjectBLL.GetByID(idSubject);
+                return PartialView("CreateOrUpdateSubject", subject);
+            }
+            return PartialView("CreateOrUpdateSubject", new Subject { Id = -1, Group = "Đại cương" });
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="roleName"></param>
+        /// <returns>
+        /// -2 nếu tên rỗng
+        /// -1 nếu trùng
+        /// 0 nếu thất bại
+        /// 1 nếu thành công
+        /// </returns>
+        [HttpPost]
+        public int CreateSubject(string name, string group)
+        {
+            return SubjectBLL.Create(name, group);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="roleId"></param>
+        /// <returns>
+        /// 0 nếu thất bại
+        /// 1 nếu thành công
+        /// </returns>
+        public int DeleteSubject(int subjectId)
+        {
+            return SubjectBLL.Delete(subjectId) ? 1 : 0;
+        }
+
+        public ActionResult GetUpdateSubject(int subjectId)
+        {
+            return Json(SubjectBLL.GetByID(subjectId));
+        }
+
+        public int PostUpdateSubject(int id, string name, string group)
+        {
+            Subject subject = new Subject { Id = id, Name = name, Group = group };
+            return SubjectBLL.Update(subject);
+        }
+
+        #endregion
     }
 }
