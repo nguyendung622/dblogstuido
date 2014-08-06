@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CMS.BLL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -64,16 +65,27 @@ namespace CMS.Helper
             var ul = new TagBuilder("ul");
             ul.AddCssClass("dropdown-menu");
             ul.MergeAttribute("role", "menu");
-            //var listSubject = SubjectBLL.GetList();
-            //foreach (var subject in listSubject)
-            //{
-            //    var a = new TagBuilder("a");
-            //    var urlHelper = new UrlHelper(htmlHelper.ViewContext.RequestContext);
-            //    var url = urlHelper.Action("ListArticle", "Article", new { idCatalogy = subject.Id });
-            //    a.MergeAttribute("href", url);
-            //    a.InnerHtml = subject.Name + "<span class='badge'>" + (42).ToString() + "</span>";
-            //    ul.InnerHtml += "<li>" + a.ToString() + "</li>";
-            //}
+            var listSubject = SubjectBLL.GetAll(true);
+            var listGroup = (from e in listSubject
+                             select e.Group).Distinct().ToList();
+            foreach (var group in listGroup)
+            {
+                ul.InnerHtml += "<li role='presentation' class='dropdown-header'>" + group + "</li>";
+                foreach (var subject in listSubject)
+                {
+                    if (subject.Group == group)
+                    {
+                        var a = new TagBuilder("a");
+                        var urlHelper = new UrlHelper(htmlHelper.ViewContext.RequestContext);
+                        var url = urlHelper.Action("ListArticle", "Article", new { idCatalogy = subject.Id });
+                        a.MergeAttribute("href", url);
+                        a.InnerHtml = subject.Name + "<span class='badge'>" + (subject.TotalArticle).ToString() + "</span>";
+                        ul.InnerHtml += "<li>" + a.ToString() + "</li>";
+                    }
+                }
+                if (listGroup.LastIndexOf(group) != (listGroup.Count - 1))
+                    ul.InnerHtml += "<li class='divider'></li>";
+            }
             li.InnerHtml += ul.ToString();
             return MvcHtmlString.Create(li.ToString());
         }

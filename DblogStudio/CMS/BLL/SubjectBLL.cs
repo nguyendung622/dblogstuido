@@ -156,16 +156,26 @@ namespace CMS.BLL
 
         }
 
-        public static List<Subject> GetAllSubjects()
+        public static List<Subject> GetAll(bool isGetArtilce = false)
         {
             using (var db = new DblogStudioDBContext())
             {
                 try
                 {
-                    var item = from e in db.Subject
-                               orderby e.Group descending
-                               select e;
-                    return item.ToList();
+                    if (isGetArtilce)
+                    {
+                        var item = from e in db.Subject.Include("Articles")
+                                   orderby e.Group descending
+                                   select e;
+                        return item.ToList();
+                    }
+                    else
+                    {
+                        var item = from e in db.Subject
+                                   orderby e.Group descending
+                                   select e;
+                        return item.ToList();
+                    }
                 }
                 catch (Exception ex)
                 {

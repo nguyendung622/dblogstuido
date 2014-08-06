@@ -71,7 +71,7 @@ namespace CMS.Controllers
         }
         #endregion
 
-        #region UserManage
+        #region User Manage
 
         public ActionResult UserManage()
         {
@@ -110,7 +110,7 @@ namespace CMS.Controllers
 
         #endregion
 
-        #region
+        #region Subject Manage
 
         public ActionResult SubjectManage()
         {
@@ -120,7 +120,7 @@ namespace CMS.Controllers
         [HttpPost]
         public ActionResult GetListSubject()
         {
-            var list = SubjectBLL.GetAllSubjects();
+            var list = SubjectBLL.GetAll();
             return Json(list);
         }
 
@@ -173,6 +173,36 @@ namespace CMS.Controllers
         {
             Subject subject = new Subject { Id = id, Name = name, Group = group };
             return SubjectBLL.Update(subject);
+        }
+
+        #endregion
+
+        #region Article Manage
+
+        public ActionResult ArticleManage()
+        {
+            return View();
+        }
+
+        public ActionResult GetListArtilce(int idSubject)
+        {
+            return Json(ArticleBLL.GetList(idSubject));
+        }
+
+        public ActionResult CreateOrUpdateArticle(int idArticle = -1)
+        {
+            var listSubject = SubjectBLL.GetAll();
+            if (listSubject != null && listSubject.Count > 0)
+                ViewBag.SubjectId = new SelectList(listSubject, "Id", "Name", listSubject.First().Id);
+            else
+                ViewBag.SubjectId = new SelectList(listSubject, "Id", "Name");
+            if (idArticle == -1)
+                return View("CreateOrUpdateArticle", new Article { Id = -1 });
+            else
+            {
+                var article = ArticleBLL.GetById(idArticle);
+                return View("CreateOrUpdateArticle", article);
+            }
         }
 
         #endregion

@@ -124,3 +124,14 @@ body {
 .jumbotron {
     padding:20px;
 }
+select {
+    background: none repeat scroll 0 0 gray;
+    border: 1px solid gray;
+    border-radius: 3px;
+    font-size: 16px;
+    min-width: 150px;
+    padding: 2px;
+}
+textarea {
+    resize: vertical;
+}

@@ -1,0 +1,90 @@
+﻿@{
+    ViewBag.Title = "ArticleManage";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1 class="page-header">Quản lý bài viết</h1>
+<img id="loading" src="~/Images/waiting-wheel-300x300.gif" />
+@Html.ActionLink("Thêm mới", "CreateOrUpdateArticle", "Admin", new { @class = "btn btn-default", role = "button" })
+<h2 class="sub-header">Danh sách các bài viết của hệ thống</h2>
+<div class="table-responsive" id="roleTable"></div>
+<div id="dialog" style="display: none"></div>
+<script type="text/javascript">
+    $(function () {
+        //$("#add").click(function () {
+
+        //});
+        GetListArticle();
+    });
+    function GetListArticle() {
+        var idSubject = $("#DanhsachSubject").val();
+        $.post("/Admin/GetListArtilce", { idSubject: idSubject },
+            function (data) {
+                var jSonData = data;
+                var str = "<table class='table table-striped'>";
+                str += "<thead><tr><th>#</th><th>Tiêu đề</th><th>Chủ đề</th><th>Người viết</th><th>Ngày viết</th><th>Thao tác</th></tr></thead>";
+                str += "<tbody>";
+
+                for (var i = 0; i < jSonData.length; i++) {
+                    str += "<tr><td>" + (i + 1) + "</td><td>" + jSonData[i].Name + "</td>";
+                    str += "<td>" + jSonData[i].TotalArticle + "</td>";
+                    str += "<td>" + jSonData[i].Group + "</td>";
+                    str += "<td><button onClick='onDelete(" + jSonData[i].Id + ")'  type='button' class='btn btn-link'>Xóa</button>";
+                    str += "<button onClick='onUpdate(" + jSonData[i].Id + ")'  type='button' class='btn btn-link'>Chỉnh sửa</button>";
+                    str += "</td></tr>";
+                }
+                str += "</tbody></table>";
+                $("#roleTable").html(str);
+            });
+    }
+
+    function onUpdate(id) {
+        $("#dialog").dialog({
+            autoOpen: false,
+            width: 600,
+            resizable: false,
+            title: 'Cập nhật',
+            modal: true,
+            draggable: false,
+            close: function (event, ui) {
+                //$(this).remove();
+                $("#dialog").empty();
+            }
+        });
+        $('#dialog').load("@Url.Action("CreateOrUpdateSubject")", { idSubject: id },
+                    function (response, status, xhr) {
+                        $('#dialog').dialog('open');
+                    });
+    }
+    function onDelete(id) {
+        $('<div></div>').appendTo('body').html('<div><h6>Bạn có thực muốn xóa chủ đề này?</h6></div>').dialog({
+            modal: true,
+            title: 'Chú ý',
+            zIndex: 10000,
+            autoOpen: true,
+            width: 'auto',
+            resizable: false,
+            buttons: {
+                "Đồng ý": function () {
+                    $.post("/Admin/DeleteSubject", { subjectId: id },
+                                                       function (data) {
+                                                           if (data == 0)
+                                                               CreateNotify("alert-danger", "Thất bại!", "Không thể xóa chủ đề này");
+                                                           else {
+                                                               CreateNotify("alert-success", "Thành công!", "Đã xóa chủ đề thành công");
+                                                               GetListSubject();
+                                                           }
+                                                       });
+                    $(this).dialog("close");
+                },
+                "Bỏ qua": function () {
+                    $(this).dialog("close");
+                }
+            },
+            close: function (event, ui) {
+                $(this).remove();
+            }
+        });
+    }
+</script>
+

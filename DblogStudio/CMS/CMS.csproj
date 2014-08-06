@@ -187,6 +187,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="BLL\ArticleBLL.cs" />
     <Compile Include="BLL\RoleBLL.cs" />
     <Compile Include="BLL\SubjectBLL.cs" />
     <Compile Include="BLL\UserBLL.cs" />
@@ -351,6 +352,8 @@
     <Content Include="Views\Admin\UserManage.cshtml" />
     <Content Include="Views\Admin\SubjectManage.cshtml" />
     <Content Include="Views\Admin\CreateOrUpdateSubject.cshtml" />
+    <Content Include="Views\Admin\ArticleManage.cshtml" />
+    <Content Include="Views\Admin\CreateOrUpdateArticle.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
