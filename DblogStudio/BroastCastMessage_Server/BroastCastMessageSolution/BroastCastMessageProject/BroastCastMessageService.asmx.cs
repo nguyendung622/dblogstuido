@@ -9,7 +9,7 @@ namespace BroastCastMessageProject
     /// <summary>
     /// Summary description for BroastCastMessageService
     /// </summary>
-    [WebService(Namespace = "http://tempuri.org/")]
+    [WebService(Namespace = "dblogstudio.com")]
     [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
     [System.ComponentModel.ToolboxItem(false)]
     // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. 
@@ -21,6 +21,11 @@ namespace BroastCastMessageProject
         public string HelloWorld()
         {
             return "Hello World";
+        }
+        [WebMethod]
+        public bool InsertRegistrationID(string registrationID)
+        {
+
         }
     }
 }

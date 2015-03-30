@@ -38,7 +38,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -73,15 +79,57 @@
     <Compile Include="BroastCastMessageWebform.aspx.designer.cs">
       <DependentUpon>BroastCastMessageWebform.aspx</DependentUpon>
     </Compile>
+    <Compile Include="DAL\BCMMessage.cs">
+      <DependentUpon>ModelBCM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\BCMRegistration.cs">
+      <DependentUpon>ModelBCM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\ModelBCM.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelBCM.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\ModelBCM.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelBCM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\ModelBCM.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelBCM.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EntityDeploy Include="DAL\ModelBCM.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ModelBCM.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="DAL\ModelBCM.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ModelBCM.edmx</DependentUpon>
+      <LastGenOutput>ModelBCM.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="DAL\ModelBCM.edmx.diagram">
+      <DependentUpon>ModelBCM.edmx</DependentUpon>
+    </Content>
+    <Content Include="DAL\ModelBCM.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ModelBCM.edmx</DependentUpon>
+      <LastGenOutput>ModelBCM.cs</LastGenOutput>
+    </Content>
+    <Content Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
